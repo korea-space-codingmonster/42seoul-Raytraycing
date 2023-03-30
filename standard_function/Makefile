@@ -1,11 +1,29 @@
+# $@: 현재 Target 이름
+# $^: 현재 Target이 의존하는 대상들의 전체 목록
+# $?: 현재 Target이 의존하는 대상들 중 변경된 것들의 목록
+
+SRCS = split.c
+
+OBJS = $(SRCS:.c=.o)
+
+CC = gcc
+RM = rm -f
+CFLAGS = -Wall -Wextra -Werror -I.
+
 NAME = standard_function.a
-COMPILE_FLAG = -Wall -Werror -Wextra
-COMPILE_COMMAND = gcc
-LIB_COMMAND = ar rc
 
-all : $(NAME)
+all:	$(NAME)
+$(NAME):	$(OBJS)
+	ar rcs $(NAME) $(OBJS)
 
-$(NAME):
-	@$(COMPILE)	$(SRC)
-	@$(LIB)	$(OBJ)
-	
+clean:
+	$(RM) $(OBJS)
+
+fclean:		clean
+	$(RM) $(NAME)
+#standard_function.a까지 삭제하는 경우
+
+re:	fclean $(NAME)
+
+.PHONY: all clean fclean re
+
